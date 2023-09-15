@@ -1,10 +1,8 @@
-const Contact = require("../models/contact");
-
-const schema = require("../schemes/contacts");
+const models = require("../models/contact");
 
 const list = async (req, res, next) => {
   try {
-    const list = await Contact.find();
+    const list = await models.Contact.find();
 
     res.json(list);
   } catch (error) {
@@ -14,7 +12,7 @@ const list = async (req, res, next) => {
 
 const getById = async (req, res, next) => {
   try {
-    const contact = await Contact.findById(req.params.contactId);
+    const contact = await models.Contact.findById(req.params.contactId);
     if (!contact) {
       res.status(404).json({ message: "Not found" });
       return;
@@ -28,14 +26,7 @@ const getById = async (req, res, next) => {
 
 const add = async (req, res, next) => {
   try {
-    const { error } = schema.addContact.validate(req.body);
-
-    if (error) {
-      res.status(400).json({ message: error.message });
-      return;
-    }
-
-    const newContact = await Contact.create(req.body);
+    const newContact = await models.Contact.create(req.body);
     res.status(201).json(newContact);
   } catch (error) {
     next(error);
@@ -44,14 +35,7 @@ const add = async (req, res, next) => {
 
 const update = async (req, res, next) => {
   try {
-    const { error } = schema.updateContact.validate(req.body);
-
-    if (error) {
-      res.status(400).json({ message: error.message });
-      return;
-    }
-
-    const updatedContact = await Contact.findByIdAndUpdate(
+    const updatedContact = await models.Contact.findByIdAndUpdate(
       req.params.contactId,
       req.body,
       { new: true }
@@ -70,12 +54,7 @@ const update = async (req, res, next) => {
 
 const updateFavorite = async (req, res, next) => {
   try {
-    const { error } = schema.updateFavorite.validate(req.body);
-    if (error) {
-      res.status(400).json({ message: error.message });
-      return;
-    }
-    const updatedContact = await Contact.findByIdAndUpdate(
+    const updatedContact = await models.Contact.findByIdAndUpdate(
       req.params.contactId,
       req.body,
       { new: true }
@@ -92,7 +71,7 @@ const updateFavorite = async (req, res, next) => {
 
 const remove = async (req, res, next) => {
   try {
-    const status = await Contact.findOneAndRemove({
+    const status = await models.Contact.findOneAndRemove({
       _id: req.params.contactId,
     });
     if (!status) {
