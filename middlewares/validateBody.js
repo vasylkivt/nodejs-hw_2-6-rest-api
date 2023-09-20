@@ -1,11 +1,18 @@
+const { httpError } = require("../utils");
+
 const validateBody = (schema) => {
   const foo = (req, res, next) => {
     const { error } = schema.validate(req.body);
 
     if (error) {
-      res.status(400).json({ message: error.message });
-      return;
+      next(
+        httpError({
+          message: error.message,
+          status: 400,
+        })
+      );
     }
+
     next();
   };
 
