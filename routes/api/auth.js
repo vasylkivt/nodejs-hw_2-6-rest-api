@@ -3,7 +3,7 @@ const router = express.Router();
 
 const auth = require("../../controllers/auth");
 const { validateBody, authenticate } = require("../../middlewares");
-const { scheme } = require("../../models/user");
+const scheme = require("../../utils/validation/userValidationSchemas");
 
 router.post("/register", validateBody(scheme.register), auth.register);
 

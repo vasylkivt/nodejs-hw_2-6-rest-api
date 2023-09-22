@@ -1,5 +1,5 @@
-const { Contact } = require("../models/contact");
-const { httpError } = require("../utils");
+const Contact = require("../models/contact");
+const { HttpError } = require("../utils");
 
 const list = async (req, res, next) => {
   const { _id: owner } = req.user;
@@ -30,7 +30,7 @@ const getById = async (req, res, next) => {
     const contact = await Contact.findById(contactId);
 
     if (!contact) {
-      throw httpError({ message: "Not found", status: 404 });
+      throw new HttpError({ message: "Not found", status: 404 });
     }
 
     res.json(contact);
@@ -61,7 +61,7 @@ const update = async (req, res, next) => {
     });
 
     if (!updatedContact) {
-      throw httpError({ message: "Not found", status: 404 });
+      throw new HttpError({ message: "Not found", status: 404 });
     }
 
     res.json(updatedContact);
@@ -80,7 +80,7 @@ const updateFavorite = async (req, res, next) => {
     });
 
     if (!updatedContact) {
-      throw httpError({ message: "Not found", status: 404 });
+      throw new HttpError({ message: "Not found", status: 404 });
     }
 
     res.json(updatedContact);
@@ -98,7 +98,7 @@ const remove = async (req, res, next) => {
     });
 
     if (!status) {
-      throw httpError({ message: "Not found", status: 404 });
+      throw new HttpError({ message: "Not found", status: 404 });
     }
 
     res.json({ message: "Contact deleted" });

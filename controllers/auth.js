@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { httpError } = require("../utils");
-const { User } = require("../models/user");
+const { HttpError } = require("../utils");
+const User = require("../models/user");
 
 const { SECRET_KEY } = process.env;
 
@@ -20,9 +20,9 @@ const register = async (req, res, next) => {
       .json({ email: newUser.email, subscription: newUser.subscription });
   } catch (error) {
     if (error.name === "MongoServerError" && error.code === 11000) {
-      next(httpError({ message: "Email in use", status: 409 }));
+      next(new HttpError({ message: "Email in use", status: 409 }));
     } else {
-      next(httpError({ message: error.message, status: 400 }));
+      next(new HttpError({ message: error.message, status: 400 }));
     }
   }
 };
@@ -34,13 +34,19 @@ const login = async (req, res, next) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      throw httpError({ message: "Email or password invalid", status: 401 });
+      throw new HttpError({
+        message: "Email or password invalid",
+        status: 401,
+      });
     }
 
     const passwordCompare = await bcrypt.compare(password, user.password);
 
     if (!passwordCompare) {
-      throw httpError({ message: "Email or password invalid", status: 401 });
+      throw new HttpError({
+        message: "Email or password invalid",
+        status: 401,
+      });
     }
 
     const payload = {

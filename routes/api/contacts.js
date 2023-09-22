@@ -1,6 +1,6 @@
 const express = require("express");
 const contact = require("../../controllers/contacts");
-const { schema } = require("../../models/contact");
+const schema = require("../../utils/validation/contactValidationSchemas");
 const {
   isValidId,
   validateBody,
