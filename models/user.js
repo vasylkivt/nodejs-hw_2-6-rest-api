@@ -1,5 +1,4 @@
 const { Schema, model } = require("mongoose");
-const Joi = require("joi");
 
 const userSchema = new Schema(
   {
@@ -30,21 +29,4 @@ const userSchema = new Schema(
 
 const User = model("user", userSchema);
 
-const register = Joi.object({
-  email: Joi.string().email().required(),
-  password: Joi.string().min(6).required(),
-  subscription: Joi.string(),
-});
-
-const login = Joi.object({
-  email: Joi.string().email().required(),
-  password: Joi.string().min(6).required(),
-});
-
-const subscription = Joi.object({
-  subscription: Joi.string().valid("starter", "pro", "business").required(),
-});
-
-const scheme = { register, login, subscription };
-
-module.exports = { User, scheme };
+module.exports = User;
