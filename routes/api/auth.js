@@ -7,6 +7,14 @@ const scheme = require("../../utils/validation/userValidationSchemas");
 
 router.post("/register", validateBody(scheme.register), auth.register);
 
+router.get("/verify/:verificationToken", auth.verifyEmail);
+
+router.post(
+  "/verify",
+  validateBody(scheme.emailSchema),
+  auth.resendVerifyEmail
+);
+
 router.post("/login", validateBody(scheme.login), auth.login);
 
 router.patch(
