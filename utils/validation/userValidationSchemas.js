@@ -10,8 +10,12 @@ const login = Joi.object({
   password: Joi.string().min(6).required(),
 });
 
+const emailSchema = Joi.object({
+  email: Joi.string().email().required(),
+});
+
 const subscription = Joi.object({
   subscription: Joi.string().valid("starter", "pro", "business").required(),
 });
 
-module.exports = { register, login, subscription };
+module.exports = { register, login, subscription, emailSchema };
